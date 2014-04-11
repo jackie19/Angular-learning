@@ -1,0 +1,18 @@
+<!doctype html>
+<html ng-app="HelloAngular">
+    <head>
+    	<meta charset="utf-8">
+    </head>
+    <body>
+        <div ng-controller="helloAngular">
+        	<input ng-model="greeting.text" ng-init="greeting.text='hello'" type="text"/>
+        	<p>
+                <span ng-bind="greeting.text"></span>
+                ,Angular
+
+            </p>
+        </div>
+    </body>
+    <script src="angular-1.0.3/angular.min.js"></script>
+    <script src="HelloAngular3.js"></script>
+</html>
