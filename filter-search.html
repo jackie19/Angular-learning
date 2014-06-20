@@ -1,0 +1,56 @@
+<!doctype html>
+<html ng-app="filter1">
+<head>
+    <meta charset="utf-8" />
+</head>
+<body>
+<div ng-controller="TestCtrl">
+    <div>
+        <span>查找：</span>
+        <input type="text" ng-model="q" />
+    </div>
+    <select ng-multiple="true" ng-model="age" ng-options="o.age as o.name + '(' + o.age + ')' for o in data | filter: {name: q} | orderBy: ['age', 'name'] " loc-change></select>
+
+    <div>
+        {{age}}
+    </div>
+</div>
+
+
+</body>
+<script src="angular-1.0.3/angular.min.js"></script>
+<script type="text/javascript">
+    angular.module('filter1', [])
+            .service('Update', function ($rootScope) {
+                var service = {
+                    log: function (msg) {
+                        console.log(msg);
+                    }
+                };
+                return service;
+            }).controller('TestCtrl', function ($scope) {
+                $scope.data = [
+                    {name: 'B', age: 4444},
+                    {name: 'A', age: 1111},
+                    {name: 'D', age: 2222},
+                    {name: 'C', age: 3333}
+                ];
+
+                $scope.age = "";
+                $scope.q = "";
+
+            }).directive('locChange', function (Update) {
+                return {
+                    restrict: 'A',
+                    link: function (scope, element, attrs) {
+                        element.bind('change', function () {
+                            Update.log(scope.age)
+                        })
+                    }
+
+                }
+
+            });
+
+</script>
+</html>
