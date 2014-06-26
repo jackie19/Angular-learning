@@ -1,0 +1,50 @@
+<!doctype html>
+<html ng-app="Demo">
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+<div ng-controller="TestCtrl">
+    <form name="f">
+        <input type="my" ng-model="a" />
+        <button ng-click="show()">查看</button>
+    </form>
+</div>
+</body>
+<script src="angular-1.0.3/angular.js"></script>
+<script>
+    var app = angular.module('Demo', [], angular.noop);
+
+    app.directive('input', function () {
+        var link = function ($scope, $element, $attrs, $ctrl) {
+            console.log($attrs.type);
+            var validator = function (v) {
+                if (v == '123') {
+                    $ctrl.$setValidity('my', true);
+                    return v;
+                } else {
+                    $ctrl.$setValidity('my', false);
+                    return undefined;
+                }
+            }
+
+            $ctrl.$formatters.push(validator);
+            $ctrl.$parsers.push(validator);
+        }
+
+        return {
+            compile: function () {
+                return link
+            },
+            require: 'ngModel',
+            restrict: 'E'
+        }
+    });
+
+    app.controller('TestCtrl', function ($scope) {
+        $scope.show = function () {
+            console.log($scope.f);
+        }
+    });
+</script>
+</html>

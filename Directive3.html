@@ -1,0 +1,50 @@
+<!doctype html>
+<html ng-app="Demo">
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+<div ng-controller="TestCtrl2">
+    <div a abc="here = here + 1" ng-click="show(here)">这里</div>
+    <div>{{ here }}</div>
+</div>
+</body>
+<script src="angular-1.0.3/angular.js"></script>
+<script>
+    var app = angular.module('Demo', [], angular.noop);
+    app.directive('a', function () {
+        var func = function (element, attrs, link) {
+            return function llink(scope) {
+                console.log(scope);
+
+                attrs.$observe(scope.here, function (new_v) {
+                    console.log('Inner, ' + new_v);
+                });
+
+                scope.a();
+                scope.b();
+                scope.here = 1;
+                scope.show = function (here) {
+                    scope.here ++;
+                    scope.a({here: here});
+                }
+
+
+            }
+        };
+        return {
+            compile: func,
+            scope: {a: '&abc', b: '&ngClick'},
+            restrict: 'A'
+        };
+    });
+    app.controller('TestCtrl2', function ($scope) {
+        $scope.here = 123;
+        console.log($scope);
+
+        $scope.show = function (here) {
+            console.log(here);
+        }
+    });
+</script>
+</html>

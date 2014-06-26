@@ -1,0 +1,57 @@
+<!doctype html>
+<html ng-app="Demo">
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+<div ng-controller="TestCtrl2">
+    <a b>kk</a>
+</div>
+</body>
+<script src="angular-1.0.3/angular.js"></script>
+<script>
+    var app = angular.module('Demo', [], angular.noop);
+
+    app.directive('a', function () {
+        var func = function () {
+        }
+
+        var controller = function ($scope, $element, $attrs, $transclude) {
+            console.log('a');
+            this.a = 'xx';
+        }
+
+        return {
+            compile: func,
+            name: 'not_a',
+            controller: controller,
+            restrict: 'E'
+        }
+    });
+
+    app.directive('b', function () {
+        var func = function () {
+            return function ($scope, $element, $attrs, $controller) {
+                console.log($controller);
+            }
+        }
+
+        var controller = function ($scope, $element, $attrs, $transclude) {
+            console.log('b');
+        }
+
+        return {
+            compile: func,
+            controller: controller,
+            require: 'not_a',
+            restrict: 'EA'
+        }
+    });
+
+    app.controller('TestCtrl2', function ($scope) {
+        $scope.show = function (here) {
+            console.log(here);
+        }
+    });
+</script>
+</html>

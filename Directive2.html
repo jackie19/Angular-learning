@@ -1,0 +1,83 @@
+<!doctype html>
+<html ng-app="Demo">
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+
+
+<div code lines>
+    //失去焦点使用 jQuery 的扩展支持冒泡
+    app.directive('ngBlur', function($parse){
+        return function($scope, $element, $attr){
+            var fn = $parse($attr['ngBlur']);
+            $element.on('focusout', function(event){
+            fn($scope, {$event: event}); });
+        }
+    });
+</div>
+</body>
+<script src="angular-1.0.3/angular.js"></script>
+<!--<script type="text/javascript" src="angular-1.0.3/angular-scenario.js"></script>-->
+<script>
+    var app = angular.module('Demo', [], angular.noop);
+    app.directive('code', function () {
+
+        var func = function ($scope, $element, $attrs) {
+
+            var html = $element.text();
+            var lines = html.split('\n');
+
+            //处理首尾空白
+            if (lines[0] == '') {
+                lines = lines.slice(1, lines.length - 1)
+            }
+            if (lines[lines.length - 1] == '') {
+                lines = lines.slice(0, lines.length - 1)
+            }
+
+            $element.html('');
+            //处理外框
+            (function () {
+                $element.css({
+                    'height': '200px',
+                    'display': 'block',
+                    'line-height': '20px',
+                    'clear': 'both'
+                });
+            })();
+
+            //是否显示行号的选项
+            if ('lines' in $attrs) {
+                //处理行号
+                (function () {
+                    var s = '<div style="width: %spx; background-color: gray; text-align: right; padding-right: 5px; margin-right: 10px;float:left">'
+                            .replace('%s', String(lines.length).length * 10);
+                    angular.forEach(lines, function (_, i) {
+                        s += '<pre style="margin: 0;">%s</pre>\n'.replace('%s', i + 1);
+                    });
+                    s += '</div>';
+                    $element.append(s);
+                })();
+            }
+
+            //处理内容
+            (function () {
+                var s = '<div style="float: left;">';
+                angular.forEach(lines, function (l) {
+                    s += '<span style="margin: 0;">%s</span><br />\n'.replace('%s', l.replace(/\s/g, '<span>&nbsp;</span>'));
+                });
+                s += '</div>';
+                $element.append(s);
+            })();
+        }
+
+        return {
+            link: func,
+            restrict: 'AE'
+        }; //以元素或属性的形式使用命令
+    });
+
+
+</script>
+</html>

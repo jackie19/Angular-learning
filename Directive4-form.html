@@ -1,0 +1,42 @@
+<!doctype html>
+<html ng-app="Demo">
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+<div ng-controller="TestCtrl">
+    <div ng-form test>
+        <input ng-model="a" type="email" />
+        <button ng-click="do()">查看</button>
+
+    </div>
+
+</div>
+</body>
+<script src="angular-1.0.3/angular.js"></script>
+<script>
+    var app = angular.module('Demo', [], angular.noop);
+    app.directive('test', function(){
+        var link = function($scope, $element, $attrs, $ctrl){
+            $scope.do = function(){
+                //$ctrl.$setDirty();
+                console.log($ctrl.$pristine); //form是否没被动过
+                console.log($ctrl.$dirty); //form是否被动过
+                console.log($ctrl.$valid); //form是否被检验通过
+                console.log($ctrl.$invalid); //form是否有错误
+                console.log($ctrl.$error); //form中有错误的字段
+            }
+        }
+
+        return {
+            compile: function(){return link},
+            require: 'form',
+            restrict: 'A'
+        }
+    });
+
+    app.controller('TestCtrl', function($scope){
+
+    });
+</script>
+</html>

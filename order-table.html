@@ -1,0 +1,38 @@
+<!doctype html>
+<html ng-app="order.table">
+    <head>
+    	<meta charset="utf-8" />
+    </head>
+    <body>
+    <div ng-controller="TestCtrl" id="test">
+        <div>{{f}}               {{rev}}</div>
+        <table>
+            <tr>
+                <th ng-click="f='name'; rev=!rev">名字</th>
+                <th ng-click="f='age'; rev=!rev">年龄</th>
+            </tr>
+
+            <tr ng-repeat="o in data | orderBy: f : rev">
+                <td>{{ o.name }}</td>
+                <td>{{ o.age }}</td>
+            </tr>
+        </table>
+    </div>
+
+
+    </body>
+    <script src="angular-1.0.3/angular.min.js"></script>
+    <script type="text/javascript">
+        angular.module('order.table',[]).controller('TestCtrl', function ($scope) {
+            $scope.data = [
+                {name: 'B', age: 4},
+                {name: 'A', age: 1},
+                {name: 'D', age: 2},
+                {name: 'C', age: 3}
+            ];
+            $scope.f = 'age';
+            $scope.rev = false;
+        });
+
+    </script>
+</html>

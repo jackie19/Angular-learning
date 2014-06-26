@@ -1,0 +1,19 @@
+<!doctype html>
+<html ng-app="my.new.module">
+    <head>
+    	<meta charset="utf-8" />
+    </head>
+    <body>
+    	<div ng-controller="book.list">
+	    	<button add-book-button>Add book</button>
+	    	<br/>
+	    	<ul>
+	    		<li ng-repeat="book in books">
+	    			书名:{{book.title}}&nbsp;&nbsp;&nbsp;作者:{{book.author}}
+	    		</li>
+	    	</ul>
+    	</div>
+    </body>
+    <script src="angular-1.0.3/angular.min.js"></script>
+    <script src="BooksStore.js"></script>
+</html>

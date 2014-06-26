@@ -1,0 +1,44 @@
+<!doctype html>
+<html ng-app="Demo">
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+/*
+这个指令的使用方式是“标签”， 即 restrict 这个参数应该设置为 E 。
+节点的属性值是对 controller 变量的引用，那么我们应该在指令的 scope 中使用 = 的方式来指定成员值。
+最终的效果显示需要进行 DOM 结构的重构，那直接使用 template 就好了。
+自定义的标签在最终效果中是多余的，所有 replace 应该设置为 true 。
+*/
+<div ng-controller="TestCtrl">
+    <ys-block title="title" text="text"></ys-block>
+    <p>标题:
+        <input ng-model="title" />
+    </p>
+    <p>内容:
+        <input ng-model="text" />
+    </p>
+</div>
+</body>
+<script src="angular-1.0.3/angular.js"></script>
+<script>
+    var app = angular.module('Demo', [], angular.noop);
+
+    app.directive('ysBlock', function () {
+        return {
+            compile: angular.noop,
+            template: '<div style="width: 200px; border: 1px solid black;"><h1 style="background-color: gray; color: white; font-size: 22px;">{{ title }}</h1><div>{{ text }}</div></div>',
+            replace: true,
+            scope: {title: '=title', text: '=text'},
+            restrict: 'E'
+        };
+    });
+
+    app.controller('TestCtrl', function ($scope) {
+        $scope.title = '标题在这里';
+        $scope.text = '内容在这里';
+    });
+
+
+</script>
+</html>

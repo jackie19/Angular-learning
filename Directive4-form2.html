@@ -1,0 +1,52 @@
+<!doctype html>
+<html ng-app="Demo">
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+<div ng-controller="TestCtrl">
+    <bb />
+    <div ng-form test>
+        <input ng-model="a" type="email" />
+        <button ng-click="add()">添加</button>
+    </div>
+</div>
+</body>
+<script src="angular-1.0.3/angular.js"></script>
+<script>
+    var app = angular.module('Demo', [], angular.noop);
+    app.directive('test', function () {
+        var link = function ($scope, $element, $attrs, $ctrl) {
+            $scope.add = function () {
+                $ctrl.$addControl($scope.bb);
+                console.log($ctrl);
+            }
+        }
+
+        return {
+            compile: function () {
+                return link
+            },
+            require: 'form',
+            restrict: 'A'
+        }
+    });
+
+    app.directive('bb', function () {
+        var controller = function ($scope, $element, $attrs, $transclude) {
+            $scope.bb = this;
+            this.$name = 'bb';
+        };
+
+        return {
+            compile: angular.noop,
+            restrict: 'E',
+            controller: controller
+        }
+    });
+
+    app.controller('TestCtrl', function ($scope) {
+
+    });
+</script>
+</html>

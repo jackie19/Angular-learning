@@ -11,8 +11,19 @@
                 ,Angular
 
             </p>
+            <button ng-click="textchange(1 + greeting.text*1, $event)">button</button>
+            <hr />
+
+            <input type="text" ng-model="li" on-keydown />
+            <button ng-click="addLi(li, $event)">add li</button>
+            <ul>
+                <li ng-repeat="li in lis">
+                    <a href="" ng-click="removeLi($index)">X</a>
+                    <span>{{li}}</span>
+                </li>
+            </ul>
         </div>
     </body>
-    <script src="angular-1.0.3/angular.min.js"></script>
+    <script src="angular-1.0.3/angular.js"></script>
     <script src="HelloAngular3.js"></script>
 </html>

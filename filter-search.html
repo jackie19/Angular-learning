@@ -1,5 +1,5 @@
 <!doctype html>
-<html ng-app="filter1">
+<html ng-app="filter">
 <head>
     <meta charset="utf-8" />
 </head>
@@ -9,10 +9,15 @@
         <span>查找：</span>
         <input type="text" ng-model="q" />
     </div>
-    <select ng-multiple="true" ng-model="age" ng-options="o.age as o.name + '(' + o.age + ')' for o in data | filter: {name: q} | orderBy: ['age', 'name'] " loc-change></select>
+    <select ng-multiple="true" ng-model="age" ng-options="o.age as o.name + '(' + o.age + ')' for o in data | filter: {name: q} | orderBy: ['age', 'name'] " loc-change>
+        <option value="">请选择</option>
+    </select>
 
     <div>
-        {{age}}
+        age is : [[age]]
+    </div>
+    <div>title is :
+        <span ng-view></span>
     </div>
 </div>
 
@@ -20,8 +25,21 @@
 </body>
 <script src="angular-1.0.3/angular.min.js"></script>
 <script type="text/javascript">
-    angular.module('filter1', [])
-            .service('Update', function ($rootScope) {
+    angular.module('filter', [
+                function ($interpolateProvider) { //定义模板变量标识标签
+                    $interpolateProvider.startSymbol('[[');
+                    $interpolateProvider.endSymbol(']]');
+                }
+            ],
+            function ($routeProvider) {
+                $routeProvider.when('/test', {
+                    template: '[[title]]',
+                    controller: function ($scope, $route, $routeParams) {
+                        $scope.title = $routeParams.title;
+                        console.log($route);
+                    }
+                });
+            }).service('Update', function ($rootScope) {
                 var service = {
                     log: function (msg) {
                         console.log(msg);
