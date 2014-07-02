@@ -16,6 +16,7 @@
 
             <input type="text" ng-model="li" on-keydown />
             <button ng-click="addLi(li, $event)">add li</button>
+            <button ng-click="update('000', $event)">update first</button>
             <ul>
                 <li ng-repeat="li in lis">
                     <a href="" ng-click="removeLi($index)">X</a>

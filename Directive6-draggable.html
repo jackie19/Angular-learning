@@ -1,0 +1,51 @@
+<!doctype html>
+<html ng-app="drag">
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+
+<span draggable>Drag ME</span>
+
+</body>
+<script src="angular-1.2.8/angular.js"></script>
+<script>
+    angular.module('drag', []).
+            directive('draggable', function ($document) {
+                return function (scope, element, attr) {
+                    var startX = 0, startY = 0, x = 0, y = 0;
+                    element.css({
+                        position: 'relative',
+                        border: '1px solid red',
+                        padding: '12px',
+                        backgroundColor: 'lightgrey',
+                        cursor: 'pointer'
+                    });
+                    element.on('mousedown', function (event) {
+                        // 阻止默认的选中内容的拖拽
+                        event.preventDefault();
+                        startX = event.screenX - x;
+                        startY = event.screenY - y;
+                        $document.on('mousemove', mousemove);
+                        $document.on('mouseup', mouseup);
+                    });
+
+                    function mousemove(event) {
+                        y = event.screenY - startY;
+                        x = event.screenX - startX;
+                        element.css({
+                            top: y + 'px',
+                            left: x + 'px'
+                        });
+                    }
+
+                    function mouseup() {
+                        $document.unbind('mousemove', mousemove);
+                        $document.unbind('mouseup', mouseup);
+                    }
+                }
+            });
+
+
+</script>
+</html>

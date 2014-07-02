@@ -14,19 +14,29 @@ myModule.controller("helloAngular", ['$scope', '$http','$timeout','dateFilter', 
 
 //    $scope.li = 'adf';
     var lis = $scope.lis = [];
+    for( var i = 0;i<1000;i++){
+        lis.push(i*100);
+    }
     $scope.addLi = function (li, event) {
         if(!li){
             return;
         }
         if(event.target.nodeName == 'BUTTON' || event.which == 13){
-            lis.push(li);
-            $scope.$apply();
+//            lis.push(li);
+
+            lis.splice(2,0,li);
+            if(event.which == 13){
+                $scope.$apply();
+            }
         }
     };
     
     $scope.removeLi = function (index) {
         lis.splice(index,1);
-    }
+    };
+    $scope.update = function () {
+      lis[2] = 'new new...';
+    };
 }]);
 
 
