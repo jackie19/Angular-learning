@@ -5,7 +5,7 @@
 		<meta charset="utf-8"/>
 		<title>Learn AngularJS - Order Form</title>
 
-		<link href="http://fonts.googleapis.com/css?family=Cookie|Open+Sans:400,700" rel="stylesheet" />
+		<!--<link href="http://fonts.googleapis.com/css?family=Cookie|Open+Sans:400,700" rel="stylesheet" />-->
 
 		<!-- The main CSS file -->
 		<link href="style.css" rel="stylesheet" />
@@ -25,7 +25,7 @@
 			<ul>
 				<!-- Loop through the services array, assign a click handler, and set or
 					remove the "active" css class if needed -->
-				<li ng-repeat="service in services" ng-click="toggleActive(service)" ng-class="{active:service.active}">
+				<li ng-repeat="service in services" ng-click="toggleActive(service)" ng-class="{active:service.active}" ng-class-even="'even'" ng-class-odd="'odd'">
 					<!-- Notice the use of the currency filter, it will format the price -->
 					{{service.name}} <span>{{service.price | currency}}</span>
 				</li>
@@ -39,7 +39,9 @@
 		</form>
 
 		<!-- Include AngularJS from Google's CDN -->
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+		<!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>-->
+        <script type="text/javascript" src="../angular-1.3.0-beta.7/angular.js"></script>
+        <script type="text/javascript" src="../angular-1.3.0-beta.7/angular-sanitize.js"></script>
 		<script src="script.js"></script>
 	</body>
 </html>

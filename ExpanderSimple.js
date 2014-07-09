@@ -1,4 +1,14 @@
 var expanderModule = angular.module('expanderModule', [])
+
+/*
+ * scope: {
+ title: '@',             // the title uses the data-binding from the parent scope
+ onOk: '&',              // create a delegate onOk function
+ onCancel: '&',          // create a delegate onCancel function
+ visible: '='            // set up visible to accept data-binding
+ }
+ */
+
 expanderModule.directive('expander', function () {
     return {
         restrict: 'EA',
@@ -9,7 +19,8 @@ expanderModule.directive('expander', function () {
         },
         template: '<div>'
             + '<div class="title" ng-click="toggle()">{{title}}</div>'
-            + '<div class="body" ng-show="showMe" ng-transclude></div>'
+            + '<div class="body" ng-show="showMe"  ng-transclude>'
+            + '</div>'
             + '</div>',
         link: function (scope, element, attrs) {
             scope.showMe = false;

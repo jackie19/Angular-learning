@@ -14,7 +14,7 @@ myModule.controller("helloAngular", ['$scope', '$http','$timeout','dateFilter', 
 
 //    $scope.li = 'adf';
     var lis = $scope.lis = [];
-    for( var i = 0;i<1000;i++){
+    for( var i = 0;i<10;i++){
         lis.push(i*100);
     }
     $scope.addLi = function (li, event) {
@@ -22,9 +22,9 @@ myModule.controller("helloAngular", ['$scope', '$http','$timeout','dateFilter', 
             return;
         }
         if(event.target.nodeName == 'BUTTON' || event.which == 13){
-//            lis.push(li);
+            lis.push(li);
 
-            lis.splice(2,0,li);
+//            lis.splice(2,0,li);
             if(event.which == 13){
                 $scope.$apply();
             }
@@ -35,7 +35,7 @@ myModule.controller("helloAngular", ['$scope', '$http','$timeout','dateFilter', 
         lis.splice(index,1);
     };
     $scope.update = function () {
-      lis[2] = 'new new...';
+      lis[0] = 'new new...';
     };
 }]);
 
@@ -45,7 +45,7 @@ myModule.directive('onKeydown', function () {
         restrict: 'A',
         link: function (scope, element) {
             element.bind('keydown', function () {
-                scope.addLi(scope.li,event);
+                scope.addLi(scope.newli,event);
             });
         }
     }

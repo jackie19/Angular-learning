@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="angular-1.3.0-beta.7/angular.js"></script>
+    <script>
+        /*
+         * $broadcast 会把事件广播给所有子 controller
+         * $emit 会将事件冒泡传递给父 controller
+         * $on 是 angularjs 的事件注册函数
+         * */
+        angular.module("app", []).controller("parentCtr", function ($scope) {
+
+            $scope.$on("Ctr1NameChange", function (event, msg) {
+                console.log("parent", msg);
+                $scope.$broadcast("Ctr1NameChangeFromParrent", msg);
+            });
+
+        }).controller("childCtr1", function ($scope) {
+            $scope.change = function (name) {
+                console.log("childCtr1", name);
+                $scope.$emit("Ctr1NameChange", name);
+            };
+
+        }).controller("childCtr2", function ($scope) {
+
+            $scope.$on("Ctr1NameChangeFromParrent", function (event, msg) {
+                console.log("childCtr2", msg);
+                $scope.ctr1Name = msg;
+            });
+        });
+
+    </script>
+</head>
+<body>
+<div ng-app="app" ng-controller="parentCtr">
+    <div ng-controller="childCtr1">name :
+        <input ng-model="name" type="text" ng-change="change(name);" />
+    </div>
+    <div ng-controller="childCtr2">Ctr1 name:
+        <input ng-model="ctr1Name" />
+    </div>
+</div>
+</body>
+</html>

@@ -1,3 +1,7 @@
-function HelloAngular($scope){
-	$scope.greeting={text:'Hello'};
-}
+
+
+angular.module('ngBindHtmlExample', ['ngSanitize'])
+    .controller('ngBindHtmlCtrl', ['$scope', function ngBindHtmlCtrl($scope) {
+    $scope.text1 =
+        'I am an <code>HTML</code>string with <a href="#">links!</a> and other <em>stuff</em>';
+}]);

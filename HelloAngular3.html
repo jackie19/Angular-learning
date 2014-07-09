@@ -13,18 +13,19 @@
             </p>
             <button ng-click="textchange(1 + greeting.text*1, $event)">button</button>
             <hr />
-
-            <input type="text" ng-model="li" on-keydown />
-            <button ng-click="addLi(li, $event)">add li</button>
+            <input type="text" ng-model="q" placeholder="filter" />
+            <br />
+            <input type="text" ng-model="newli" on-keydown />
+            <button ng-click="addLi(newli, $event)">add li</button>
             <button ng-click="update('000', $event)">update first</button>
             <ul>
-                <li ng-repeat="li in lis">
+                <li ng-repeat="li in lis | filter: q track by $index ">
                     <a href="" ng-click="removeLi($index)">X</a>
                     <span>{{li}}</span>
                 </li>
             </ul>
         </div>
     </body>
-    <script src="angular-1.0.3/angular.js"></script>
+    <script src="angular-1.2.8/angular.js"></script>
     <script src="HelloAngular3.js"></script>
 </html>

@@ -1,4 +1,4 @@
-function OrderFormController($scope){
+function OrderFormController($scope ,$sce){
 
 	// Define the model properties. The view will loop
 	// through the services array and genreate a li
@@ -6,7 +6,7 @@ function OrderFormController($scope){
 
 	$scope.services = [
 		{
-			name: 'Web Development',
+			name: 'Web <b>Development</b>',
 			price: 300,
 			active:true
 		},{
