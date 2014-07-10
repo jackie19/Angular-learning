@@ -86,6 +86,7 @@ ul li{
 	padding: 10px;
 	overflow: hidden;
 }
+ul .odd{ background-color:rgba(248, 248, 248, 0.93);}
 
 ul li img{
 	width:60px;
