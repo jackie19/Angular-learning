@@ -1,0 +1,86 @@
+<!doctype html>
+<html ng-app="docsTabsExample">
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+
+
+<my-tabs>
+    <my-pane title="Hello">
+        <h4>Hello</h4>
+        <p>Lorem ipsum dolor sit amet</p>
+    </my-pane>
+    <my-pane title="World">
+        <h4>World</h4>
+        <em>Mauris elementum elementum enim at suscipit.</em>
+        <p>
+            <a href ng-click="i = i + 1">counter: {{i || 0}}</a>
+        </p>
+    </my-pane>
+</my-tabs>
+
+
+</body>
+<script src="angular-1.0.3/angular.js"></script>
+<script>
+    angular.module('docsTabsExample', [])
+            .directive('myTabs', function () {
+                return {
+                    restrict: 'E',
+                    transclude: true,
+                    scope: {},
+                    controller: function ($scope) {
+                        var panes = $scope.panes = [];
+
+                        $scope.select = function (pane) {
+                            angular.forEach(panes, function (pane) {
+                                pane.selected = false;
+                            });
+                            pane.selected = true;
+                        };
+
+                        this.addPane = function (pane) {
+                            if (panes.length === 0) {
+                                $scope.select(pane);
+                            }
+                            panes.push(pane);
+                        };
+                    },
+//                    templateUrl: 'my-tabs.html',
+                    template: '<div class="tabbable">' +
+                            ' <ul class="nav nav-tabs">' +
+                            '<li ng-repeat="pane in panes" ng-class="{active:pane.selected}">' +
+                            '<a href="" ng-click="select(pane)">{{pane.title}}</a>' +
+                            '</li>' +
+                            '</ul>' +
+                            '<div class="tab-content" ng-transclude></div>' +
+                            '</div>'
+                };
+            })
+            .directive('myPane', function () {
+                return {
+                    //$compile 服务会查找一个名叫 myTabs 的控制器，
+                    // 如果没有找到，就会抛出一个错误。
+                    // ^前缀意味着指令将会在它的父元素上面搜索控制器
+                    // (如果没有^前缀， 指令默认只在所属元素上搜索指定的控制器)。
+                    require: '^myTabs',
+                    restrict: 'E',
+                    transclude: true,
+                    scope: {
+                        title: '@'
+                    },
+                    link: function (scope, element, attrs, tabsCtrl) {
+                        //tabsCtrl， 当一个指令需要(require)一个控制器时，
+                        // 它会接收该指令的控制器实例作为link函数的第四个参数，
+                        // 通过它，myPane就可以调用myTabs的addPane函数了。
+                        tabsCtrl.addPane(scope);
+                    },
+//                    templateUrl: 'my-pane.html',
+                    template: '<div class="tab-pane" ng-show="selected" ng-transclude></div>'
+                };
+            });
+
+
+</script>
+</html>
