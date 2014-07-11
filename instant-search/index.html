@@ -28,13 +28,12 @@
 				 the custom search filter "searchFor". It takes the value of the
 				 searchString model as an argument.
 			 -->
-			<li ng-class-odd="'odd'" ng-repeat="i in items | searchFor:searchString" ng-class="'li_'+$index">
+			<li ng-class-odd="'odd'" ng-repeat="i in items | filter:searchString" ng-class="'li_'+$index">
 				<a href="{{i.url}}"><img ng-src="{{i.image}}" /></a>
 				<p ng-bind-html="i.title"></p>
 			</li>
 		</ul>
 
-		<!-- Include AngularJS from Google's CDN -->
 		<script src="../angular-1.3.0-beta.7/angular.min.js"></script>
         <script type="text/javascript" src="../angular-1.3.0-beta.7/angular-sanitize.js"></script>
 		<script src="script.js"></script>
