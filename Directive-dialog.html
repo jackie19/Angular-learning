@@ -1,0 +1,58 @@
+<!doctype html>
+<html ng-app="docsIsoFnBindExample">
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+<div ng-controller="Controller">
+    <my-dialog ng-hide="dialogIsHidden" on-close="hideDialog()" info="igor">
+        Check out the contents, {{name}}!
+    </my-dialog>
+</div>
+
+</body>
+<script src="angular-1.3.0-beta.7/angular.min.js"></script>
+<script>
+    angular.module('docsIsoFnBindExample', [])
+            .controller('Controller', ['$scope', '$timeout', function ($scope, $timeout) {
+                $scope.name = 'Tobias';
+                $scope.igor = 'Igor';
+                $scope.hideDialog = function () {
+                    $scope.dialogIsHidden = true;
+
+                    $timeout(function () {
+                        $scope.dialogIsHidden = false;
+                    }, 2000);
+                }
+            }])
+            .directive('myDialog', function () {
+                return {
+                    restrict: 'E',
+                    replace: true,
+                    transclude: true,
+                    scope: {
+                        //=attr
+                        //如果要使你的组件在应用范围内可重用，那么使用scope选项去创建一个独立作用域
+                        //普通的作用域都使用原型方式继承自父作用域。但是独立作用域没有这样的继承关系
+                        //作用域选项 是一组为每个独立作用域绑定的属性组合.在此例子中它只有一个属性：
+                        //1 它的名字(customerInfo) 对应于指令里的独立作用域的customerInfo属性.
+                        //2 它的值 (=info) 告诉$compile 这是绑定了所在元素的 info 属性。
+                        //使用独立作用域(isolate scope)还有另外一个用处，那就是可以绑定不同的数据到指令内部的作用域。
+                        'customerInfo': '=info',
+
+                        //当你的指令想要开放一个API去绑定特定的行为，在scope选项中使用&prop。
+                        // & 绑定了一个函数到独立作用域， 允许独立作用域调用它，
+                        // 同时保留了原来函数的作用域(这里的作用域都是指$scope)。
+                        // 所以当一个用户点击x时候，就会运行Ctrl控制器的close函数。
+                        'close': '&onClose'
+                    },
+                    template: '<div class="alert">' +
+                            '<a href class="close" ng-click="close()">&times;</a>' +
+                            '<div ng-transclude></div>' +
+                            '{{customerInfo}}' +
+                            '</div>'
+                }
+            });
+
+</script>
+</html>
