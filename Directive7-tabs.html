@@ -10,6 +10,10 @@
     <my-pane title="Hello">
         <h4>Hello</h4>
         <p>Lorem ipsum dolor sit amet</p>
+        <div class="a" ng-controller="a">
+            <input type="text" ng-model="q" />
+            {{q}}
+        </div>
     </my-pane>
     <my-pane title="World">
         <h4>World</h4>
@@ -17,19 +21,22 @@
         <p>
             <a href ng-click="i = i + 1">counter: {{i || 0}}</a>
         </p>
+
     </my-pane>
 </my-tabs>
 
 
 </body>
-<script src="angular-1.0.3/angular.js"></script>
+<script src="angular-1.2.8/angular.js"></script>
 <script>
     angular.module('docsTabsExample', [])
             .directive('myTabs', function () {
                 return {
                     restrict: 'E',
                     transclude: true,
+                    replace:true,
                     scope: {},
+                    //当你想暴露一个API给其它的指令调用那就用controller,否则用link。
                     controller: function ($scope) {
                         var panes = $scope.panes = [];
 
@@ -48,13 +55,13 @@
                         };
                     },
 //                    templateUrl: 'my-tabs.html',
-                    template: '<div class="tabbable">' +
-                            ' <ul class="nav nav-tabs">' +
-                            '<li ng-repeat="pane in panes" ng-class="{active:pane.selected}">' +
+                    template: '<div class="ui-tabbable">' +
+                            ' <ul class="ui-tab-navs">' +
+                            '<li class="ui-tab-nav" ng-repeat="pane in panes" ng-class="{active:pane.selected}">' +
                             '<a href="" ng-click="select(pane)">{{pane.title}}</a>' +
                             '</li>' +
                             '</ul>' +
-                            '<div class="tab-content" ng-transclude></div>' +
+                            '<div class="ui-tab-content" ng-transclude></div>' +
                             '</div>'
                 };
             })
@@ -67,18 +74,22 @@
                     require: '^myTabs',
                     restrict: 'E',
                     transclude: true,
+                    replace:true,
                     scope: {
-                        title: '@'
+                        title: '@'  // the title uses the data-binding from the parent scope
                     },
                     link: function (scope, element, attrs, tabsCtrl) {
                         //tabsCtrl， 当一个指令需要(require)一个控制器时，
-                        // 它会接收该指令的控制器实例作为link函数的第四个参数，
-                        // 通过它，myPane就可以调用myTabs的addPane函数了。
+                        // 它会接收该指令的控制器实例作为 link 函数的第四个参数，
+                        // 通过它，myPane 就可以调用 myTabs 的 addPane 函数了。
                         tabsCtrl.addPane(scope);
                     },
 //                    templateUrl: 'my-pane.html',
-                    template: '<div class="tab-pane" ng-show="selected" ng-transclude></div>'
+                    template: '<div class="tab-pane" ng-class="title" ng-show="selected" ng-transclude></div>'
                 };
+            })
+            .controller('a', function ($scope) {
+                $scope.q = '2';
             });
 
 

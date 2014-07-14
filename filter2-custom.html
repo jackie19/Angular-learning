@@ -1,0 +1,55 @@
+<!doctype html>
+<html ng-app="filter">
+<head>
+    <meta charset="utf-8" />
+</head>
+<body>
+<div>
+    <pre>
+
+        register('currency', currencyFilter);
+        register('date', dateFilter);
+        register('filter', filterFilter);
+        register('json', jsonFilter);
+        register('limitTo', limitToFilter);
+        register('lowercase', lowercaseFilter);
+        register('number', numberFilter);
+        register('orderBy', orderByFilter);
+        register('uppercase', uppercaseFilter);
+
+    </pre>
+
+</div>
+<div ng-controller="Controller">
+    <input ng-model="greeting" type="text"><br>
+    No filter: {{greeting}}<br>
+    Uppercase: {{greeting|uppercase}}<br>
+    Reverse: {{greeting|reverse}}<br>
+    Reverse + uppercase: {{greeting|reverse:true}}<br>
+</div>
+
+
+</body>
+<script src="angular-1.0.3/angular.js"></script>
+<script type="text/javascript">
+    angular.module('filter',[])
+            .filter('reverse', function () {
+                return function (input, uppercase) {
+                    input = input || '';
+                    var out = '';
+                    /*for(var i = 0;i<input.length;i++){
+                        out = input.charAt(i) + out;
+                    }*/
+                    out = input.split('').reverse().join('');
+                    if(uppercase){
+                        out = out.toUpperCase();
+                    }
+                    return out;
+                }
+            })
+            .controller('Controller', function ($scope) {
+                $scope.greeting = 'hello';
+            })
+
+</script>
+</html>
