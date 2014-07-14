@@ -1,0 +1,54 @@
+<!doctype html>
+<html ng-app>
+<head>
+    <meta charset="utf-8" />
+    <style type="text/css">
+        .css-form .ng-invalid.ng-dirty {
+            background-color: #FA787E;
+        }
+
+        .css-form .ng-valid.ng-dirty {
+            background-color: #78FA89;
+        }
+    </style>
+</head>
+<body>
+
+<div ng-controller="Controller">
+    <!--其中 novalidate 属性用于禁用浏览器自带的表单验证功能-->
+    <form novalidate class="css-form">
+        Name: <input type="text" ng-model="user.name" required /><br />
+        E-mail: <input type="email" ng-model="user.email" required /><br />
+        Gender: <input type="radio" ng-model="user.gender" value="male" />male
+        <input type="radio" ng-model="user.gender" value="female" />female<br />
+        <button ng-click="reset()">RESET</button>
+        <button ng-click="update(user)">SAVE</button>
+    </form>
+    <pre>form = {{user | json}}</pre>
+    <pre>master = {{master | json}}</pre>
+</div>
+
+<script>
+
+</script>
+
+</body>
+<script src="angular-1.3.0-beta.7/angular.js"></script>
+<script type="text/javascript">
+    function Controller($scope) {
+        $scope.master = {};
+
+        $scope.user = {};
+
+        $scope.update = function(user) {
+            $scope.master = angular.copy(user);
+        };
+
+        $scope.reset = function() {
+            $scope.user = angular.copy($scope.master);
+        };
+
+        $scope.reset();
+    }
+</script>
+</html>

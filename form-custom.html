@@ -1,0 +1,115 @@
+<!doctype html>
+<html ng-app="form-example1">
+<head>
+    <meta charset="utf-8" />
+    <style type="text/css">
+        .css-form .ng-invalid.ng-dirty {
+            background-color: #FA787E;
+        }
+
+        .css-form .ng-valid.ng-dirty {
+            background-color: #78FA89;
+        }
+
+        div[contentEditable] {
+            cursor: pointer;
+            background-color: #D0D0D0;
+        }
+    </style>
+</head>
+<body>
+
+
+<form name="form" class="css-form" novalidate>
+    <div>
+        Size (integer 0 - 10):
+        <input type="number" ng-model="size" name="size"
+                min="0" max="10" integer />{{size}}<br />
+        <span ng-show="form.size.$error.integer">This is not valid integer!</span>
+        <span ng-show="form.size.$error.min || form.size.$error.max">
+            The value must be in range 0 to 10!</span>
+    </div>
+
+    <div>
+        Length (float):
+        <input type="text" ng-model="length" name="length" smart-float />
+        {{length}}<br />
+        <span ng-show="form.length.$error.float">
+            This is not a valid float number!</span>
+    </div>
+</form>
+
+<hr />
+<div contentEditable="true" ng-model="content" title="Click to edit">Some</div>
+<pre>model = {{content}}</pre>
+
+
+
+</body>
+<script src="angular-1.3.0-beta.7/angular.js"></script>
+<script type="text/javascript">
+
+    var app = angular.module('form-example1', []);
+
+    var INTEGER_REGEXP = /^\-?\d+$/;
+    app.directive('integer', function() {
+        return {
+            require: 'ngModel',
+            link: function(scope, elm, attrs, ctrl) {
+                ctrl.$parsers.unshift(function(viewValue) {
+                    if (INTEGER_REGEXP.test(viewValue)) {
+                        // it is valid
+                        ctrl.$setValidity('integer', true);
+                        return viewValue;
+                    } else {
+                        // it is invalid, return undefined (no model update)
+                        ctrl.$setValidity('integer', false);
+                        return undefined;
+                    }
+                });
+            }
+        };
+    });
+
+    var FLOAT_REGEXP = /^\-?\d+((\.|\,)\d+)?$/;
+    app.directive('smartFloat', function() {
+        return {
+            require: 'ngModel',
+            link: function(scope, elm, attrs, ctrl) {
+                ctrl.$parsers.unshift(function(viewValue) {
+                    if (FLOAT_REGEXP.test(viewValue)) {
+                        ctrl.$setValidity('float', true);
+                        return parseFloat(viewValue.replace(',', '.'));
+                    } else {
+                        ctrl.$setValidity('float', false);
+                        return undefined;
+                    }
+                });
+            }
+        };
+    });
+
+
+    app.directive('contenteditable', function () {
+        return {
+            require: 'ngModel',
+            link: function(scope, elm, attrs, ctrl) {
+                // view -> model
+                elm.on('input', function() {
+                    scope.$apply(function() {
+                        ctrl.$setViewValue(elm.html());
+                    });
+                });
+
+                // model -> view
+                ctrl.$render = function() {
+                    elm.html(ctrl.$viewValue);
+                };
+
+                // load init value from DOM
+                ctrl.$setViewValue(elm.html());
+            }
+        };
+    });
+</script>
+</html>
