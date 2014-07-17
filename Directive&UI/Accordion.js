@@ -26,6 +26,7 @@ expModule.directive('expander', function() {
 		restrict : 'EA',
 		replace : true,
 		transclude : true,
+        // The ^ prefix means that this directive searches for the controller on its parents (without the ^ prefix, the directive would look for the controller on just its own element).
 		require : '^?accordion',
 		scope : {
 			title : '=expanderTitle'
