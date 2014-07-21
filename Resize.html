@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="angular-1.3.0.14/angular.js"></script>
+    <script type="text/javascript">
+        /*javascript external to angular applies to a scope*/
+
+        function tellAngular() {
+            console.log("tellAngular call");
+            var domElt = document.getElementById('someDiv');
+            scope = angular.element(domElt).scope();
+            scope.$apply(function() {
+                scope.width = window.innerWidth;
+                scope.height = window.innerHeight;
+            });
+        }
+
+        //first call of tellAngular when the dom is loaded
+        document.addEventListener("DOMContentLoaded", tellAngular, false);
+
+        //calling tellAngular on resize event
+        window.onresize = tellAngular;
+
+        /*angular controller*/
+
+        function myCtrl($scope) { /*classical scope definition*/
+            $scope.infoTxt = "Bonjour! Redimensionnez votre fenetre, je vous prie. Please resize your window. Bitte der Fenstergrösse andern.";
+        }
+    </script>
+    <style>
+        #someDiv {
+            margin:10px;
+            padding:5px;
+            height:120px;
+            width:250px;
+            background:rgb(240,170,170);
+        }
+        h1 {font-weight:bold;}
+        p {margin-bottom:5px;}
+
+    </style>
+</head>
+<body>
+<div id="ngDiv" ng-app ng-controller="myCtrl">
+    <div id="someDiv">
+        <p>{{infoTxt}}<p>
+
+        <p>window innersize:({{width}}, {{height}})</p>
+    </div><!--someDiv-->
+</div><!--ngDiv-->
+
+<!--That's all folks-->
+<h1>Other interesting information:</h1>
+<p><a href="http://docs.angularjs.org/misc/started">http://docs.angularjs.org/misc/started</a>
+    Especially the overview part.</p>
+<p><a href="http://jsfiddle.net/johnoscott/dgW73/2/">http://jsfiddle.net/johnoscott/dgW73/2/</a>
+    More sophisticated and general example that helped me and lead me to write thie fiddle.</p>
+<h1>Why this?</h1>
+<p>Needed to dynamically fix the size of some containers, and modify some css depending on the screen size and orientation</p>
+
+</body>
+</html>
