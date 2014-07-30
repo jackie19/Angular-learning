@@ -5621,6 +5621,7 @@ function $TemplateCacheProvider() {
  *     console.log('ngModel has changed value to ' + value);
  *   });
  * }
+ *
  * ```
  *
  * Below is an example using `$compileProvider`.

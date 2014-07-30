@@ -1,0 +1,51 @@
+<!doctype html>
+<html ng-app>
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+<div id="" ng-controller="myCtrl">{{content.label}}</div>
+
+
+</body>
+<script type="text/javascript" src="jquery-1.4.4.min.js"></script>
+<script src="angular-1.3.0.14/angular.js"></script>
+<script type="text/javascript">
+
+    function myCtrl($scope) {
+        $scope.content = {
+            label: 'my content label.'
+        }
+    }
+
+    function yourCtrl($scope) {
+        $scope.content = {
+            label: 'appended content label.'
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var $div = $('<div ng-controller="yourCtrl">{{content.label}}</div>');
+        $(document.body).append($div);
+
+        //jquery插入的元素, 方法一
+        /* var $injector = angular.injector(['ng']);
+             $injector.invoke(function ($rootScope, $compile, $document) {
+             $compile($document)($rootScope);
+             $rootScope.$digest();
+         });*/
+
+        //方法二
+        var $doc = angular.element(document);
+        var $injector = $doc.injector();
+        $injector.invoke(['$compile', function ($compile) {
+            var scope = angular.element($div).scope();
+            $compile($div)(scope);
+            scope.$apply();
+
+        }]);
+    }, false);
+
+
+</script>
+</html>

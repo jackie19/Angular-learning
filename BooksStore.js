@@ -6,8 +6,17 @@ bookStoreModule.service('Book', ['$rootScope','$http', function ($rootScope, $ht
             {title: "《Ext江湖》", author: "大漠穷秋"},
             {title: "《ActionScript游戏设计基础（第二版）》", author: "大漠穷秋"}
         ],
-        addBook: function () {
+        addBook1: function () {
             $http.get('BookStore.json').success(function (book) {
+                service.books.push(book);
+                $rootScope.$broadcast('books.update');
+            });
+        },
+        addBook: function () {
+            $http({
+                method:'GET',
+                url:'BookStore.json?callback=JSON_CALLBACK'
+            }).success(function (book) {
                 service.books.push(book);
                 $rootScope.$broadcast('books.update');
             });
