@@ -13,62 +13,88 @@
         <option value="">请选择</option>
     </select>
 
-    <div>
-        age is : [[age]]
-    </div>
+    <br />
+    <hr />
+    <input type="text" ng-model="search.name" placeholder="name" />
+    <input type="text" ng-model="search.age" placeholder="age" />
+    <input type="checkbox" ng-model="strict" />
+    <ul>
+        <li ng-repeat="dt in data | filter:search:strict | orderBy: 'age'">
+            [[dt.name]] , [[dt.age]]
+        </li>
+    </ul>
+
+
     <div>title is :
-        <span ng-view="title"></span>
+        <span ng-view></span>
     </div>
+
+    <br />
+    <hr />
+    <fieldset>
+        Limit [[numbers]] to:
+        <input type="integer" ng-model="numLimit">
+        <p>Output numbers: [[ numbers | limitTo:numLimit ]]</p>
+        Limit [[letters]] to:
+        <input type="integer" ng-model="letterLimit">
+        <p>Output letters: [[ letters | limitTo:letterLimit ]]</p>
+    </fieldset>
 </div>
 <a href="#test">test</a>
 
 </body>
-<script src="angular-1.0.3/angular.min.js"></script>
+<script src="angular-1.3.0.14/angular.min.js"></script>
+<script type="text/javascript" src="angular-1.3.0.14/angular-route.js"></script>
 <script type="text/javascript">
-    angular.module('filter', [
-                function ($interpolateProvider) { //定义模板变量标识标签
-                    $interpolateProvider.startSymbol('[[');
-                    $interpolateProvider.endSymbol(']]');
-                }
-            ],
-            function ($routeProvider) {
-                $routeProvider.when('/test', {
-                    template: '[[title]]',
-                    controller: function ($scope, $route, $routeParams) {
-                        $scope.title = $routeParams.title;
-                        console.log($route);
-                    }
-                });
-            }).service('Update', function ($rootScope) {
-                var service = {
-                    log: function (msg) {
-                        console.log(msg);
-                    }
-                };
-                return service;
-            }).controller('TestCtrl', function ($scope) {
-                $scope.data = [
-                    {name: 'B', age: 4444},
-                    {name: 'A', age: 1111},
-                    {name: 'D', age: 2222},
-                    {name: 'C', age: 3333}
-                ];
+    angular.module('filter', ['ngRoute',
+        function ($interpolateProvider) { //定义模板变量标识标签
+            $interpolateProvider.startSymbol('[[');
+            $interpolateProvider.endSymbol(']]');
+        }
+    ]).config(function ($routeProvider) {
+        $routeProvider.when('/test', {
+            template: '[[title]]',
+            controller: function ($scope, $route, $routeParams) {
+                $scope.title = $route.current.params;
+                console.log($scope.title);
+            }
+        });
+    }).service('Update', function ($rootScope) {
+        var service = {
+            log: function (msg) {
+                console.log(msg);
+            }
+        };
+        return service;
+    }).controller('TestCtrl', function ($scope) {
+        $scope.data = [
+            {name: 'B', age: 4444},
+            {name: 'b', age: 44},
+            {name: 'A', age: 1111},
+            {name: 'D', age: 2222},
+            {name: 'C', age: 3333}
+        ];
 
-                $scope.age = "";
-                $scope.q = "";
+        $scope.age = "";
+        $scope.q = "";
 
-            }).directive('locChange', function (Update) {
-                return {
-                    restrict: 'A',
-                    link: function (scope, element, attrs) {
-                        element.bind('change', function () {
-                            Update.log(scope.age)
-                        })
-                    }
+        $scope.numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+        $scope.letters = "abcdefghi";
+        $scope.numLimit = 3;
+        $scope.letterLimit = 3;
 
-                }
+    }).directive('locChange', function (Update) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                element.bind('change', function () {
+                    Update.log(scope.age)
+                })
+            }
 
-            });
+        }
+
+    });
 
 </script>
 </html>

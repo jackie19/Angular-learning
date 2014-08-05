@@ -5,15 +5,21 @@
 </head>
 <body>
 <div ng-controller="ngBindHtmlCtrl">
-    <p><span ng-bind="text"></span></p>
-    <p>{{text}}</p>
     <p>
-        <textarea ng-model="text"></textarea></p>
-    <div ng-bind-html="text"></div>
+        <span ng-bind="text"></span>
+    </p>
+    <p>{{text}}</p>
+
+    <div ng-bind-html="text" ng-init="myStyle={background:'#ccc'}" ng-click="myStyle={background:'red'}" ng-style="myStyle"></div>
+    <p>
+        <textarea ng-model="text"></textarea>
+    </p>
+
+
 </div>
 </body>
-<script src="angular-1.3.0-beta.7/angular.min.js"></script>
-<script src="angular-1.3.0-beta.7/angular-sanitize.js"></script>
+<script src="angular-1.3.0.14/angular.min.js"></script>
+<script src="angular-1.3.0.14/angular-sanitize.js"></script>
 <script>
 
     angular.module('ngBindHtmlExample', ['ngSanitize'])

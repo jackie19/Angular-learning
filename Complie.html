@@ -6,30 +6,33 @@
 <body>
 
 <div ng-controller="Ctrl">
-    name: <input ng-model="name"> <br>
-    html:<textarea ng-model="html"></textarea> <br>
-    complie:<span compile="html"></span>
+    name:
+    <input ng-model="name">
+    <br> html:
+    <textarea ng-model="html"></textarea>
+    <br> complie:
+    <span compile="html"></span>
 </div>
 
 </body>
 <script src="angular-1.3.0.14/angular.js"></script>
 <script type="text/javascript">
-    angular.module('compile', [], function($compileProvider) {
+    angular.module('compile', [], function ($compileProvider) {
         // configure new 'compile' directive by passing a directive
         // factory function. The factory function injects the '$compile'
-        $compileProvider.directive('compile', function($compile) {
+        $compileProvider.directive('compile', function ($compile) {
             // directive factory creates a link function
-            return function(scope, element, attrs) {
+            return function (scope, element, attrs) {
                 scope.$watch(
-                        function(scope) {
+                        function (scope) {
                             // watch the 'compile' expression for changes
                             return scope.$eval(attrs.compile);
                         },
-                        function(value) {
+                        function (value) {
                             // when the 'compile' expression changes
                             // assign it into the current DOM
                             element.html(value);
-                            console.log(value);
+
                             // compile the new DOM and link it to the current
                             // scope.
                             // NOTE: we only compile .childNodes so that
@@ -45,5 +48,7 @@
         $scope.name = 'Angular';
         $scope.html = 'Hello {{name}}';
     }
+
+
 </script>
 </html>
