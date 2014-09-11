@@ -14,17 +14,31 @@
     <p>
         <textarea ng-model="text"></textarea>
     </p>
-
+{{count}}
 
 </div>
 </body>
-<script src="angular-1.3.0.14/angular.min.js"></script>
+<script src="angular-1.3.0.14/angular.js"></script>
 <script src="angular-1.3.0.14/angular-sanitize.js"></script>
 <script>
 
     angular.module('ngBindHtmlExample', ['ngSanitize'])
-            .controller('ngBindHtmlCtrl', ['$scope', function ngBindHtmlCtrl($scope) {
+            .controller('ngBindHtmlCtrl', ['$scope','$controller','$http', function ngBindHtmlCtrl($scope,$controller, $http) {
                 $scope.text = 'I am an <code>HTML</code>string with <a href="#">links!</a> and other <em>stuff</em>';
+                $scope.count = 0
+                var dt = function ($interval) {
+                    this.count = 0;
+                    this.$interval = $interval;
+                }
+                dt.prototype.alert = function () {
+                    this.$interval(function () {
+                        $scope.count++;
+                    },400);
+                }
+
+
+                var mc = $controller(dt);
+                mc.alert();
             }]);
 </script>
 </html>

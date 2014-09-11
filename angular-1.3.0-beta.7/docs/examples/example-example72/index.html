@@ -5,8 +5,6 @@
   <title>Example - example-example72</title>
   
 
-  <script src="../../../angular.min.js"></script>
-  <script src="script.js"></script>
   
 
   
@@ -21,9 +19,9 @@
     $location.path() = {{$location.path()}}<br>
     $location.search() = {{$location.search()}}<br>
     $location.hash() = {{$location.hash()}}<br>
-    <a href="http://www.example.com/base/first?a=b">/base/first?a=b</a> |
-    <a href="http://www.example.com/base/sec/ond?flag#hash">sec/ond?flag#hash</a> |
-    <a href="/other-base/another?search">external</a>
+    <a href="http://www.example.com/base/first?a=b" ng-click="html5Url = $event.target.href">/base/first?a=b</a> |
+    <a href="http://www.example.com/base/sec/ond?flag#hash" ng-click="html5Url = $event.target.href">sec/ond?flag#hash</a> |
+    <a href="/other-base/another?search" ng-click="html5Url = $event.target.href">external</a>
   </div>
 
   <div id="hashbang-mode" ng-controller="HashbangCntl">
@@ -35,9 +33,12 @@
     $location.path() = {{$location.path()}}<br>
     $location.search() = {{$location.search()}}<br>
     $location.hash() = {{$location.hash()}}<br>
-    <a href="http://www.example.com/base/first?a=b">/base/first?a=b</a> |
-    <a href="http://www.example.com/base/sec/ond?flag#hash">sec/ond?flag#hash</a> |
-    <a href="/other-base/another?search">external</a>
+    <a href="http://www.example.com/base/first?a=b" ng-click="hashbangUrl = $event.target.href">/base/first?a=b</a> |
+    <a href="http://www.example.com/base/sec/ond?flag#hash" ng-click="hashbangUrl = $event.target.href">sec/ond?flag#hash</a> |
+    <a href="/other-base/another?search" ng-click="hashbangUrl = $event.target.href">external</a>
   </div>
 </body>
+
+<script src="../../../angular.min.js"></script>
+<script src="script.js"></script>
 </html>

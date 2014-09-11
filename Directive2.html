@@ -2,10 +2,13 @@
 <html ng-app="Demo">
 <head>
     <meta charset="utf-8">
+    <style>
+        .border{ height:200px; clear:both; display:block; line-height:20px;}
+    </style>
 </head>
 <body>
 
-
+<div></div>
 <div code lines>
     //失去焦点使用 jQuery 的扩展支持冒泡
     app.directive('ngBlur', function($parse){
@@ -39,12 +42,13 @@
             $element.html('');
             //处理外框
             (function () {
-                $element.css({
+                /*$element.css({
                     'height': '200px',
                     'display': 'block',
                     'line-height': '20px',
                     'clear': 'both'
-                });
+                });*/
+                $element.addClass('border');
             })();
 
             //是否显示行号的选项

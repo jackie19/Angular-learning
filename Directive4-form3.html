@@ -7,7 +7,7 @@
 <div ng-controller="TestCtrl">
     <form name="f">
         <input type="my" ng-model="a" />
-        <button ng-click="show()">查看</button>
+        <button ng-click="show()" ng-class="{disabled:f.$invalid}">查看</button>
     </form>
 </div>
 </body>

@@ -1,23 +1,24 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Example - example-example66</title>
-  
+    <meta charset="UTF-8">
+    <title>Example - example-example66</title>
 
-  <script src="../../../angular.min.js"></script>
-  
 
-  
+    <script src="../../../angular.min.js"></script>
+    <script src="../../../angular-cookies.min.js"></script>
+
+
 </head>
-<body ng-app="">
-    <script>
+<body ng-app="ngCookies">
+<script>
     function ExampleController($cookies) {
-      // Retrieving a cookie
-      var favoriteCookie = $cookies.myFavorite;
-      // Setting a cookie
-      $cookies.myFavorite = 'oatmeal';
+        // Retrieving a cookie
+        var favoriteCookie = $cookies.myFavorite;
+        // Setting a cookie
+        $cookies.myFavorite = 'oatmeal';
     }
-  </script>
+</script>
+<div ng-controller="ExampleController"></div>
 </body>
 </html>

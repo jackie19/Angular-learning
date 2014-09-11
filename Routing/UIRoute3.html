@@ -9,10 +9,45 @@
     <script src="../angular-1.3.0.14/angular-animate.js"></script>
     <script src="../framework/angular-ui-router.js"></script>
     <script src="UIRoute3.js"></script>
+    <style>
+
+        html,body{width: 100%;height: 100%;}
+
+        .view-animate-container{
+            height:100%;
+            width:100%;
+            position:relative;
+            overflow:hidden;
+        }
+
+        .view-animate{
+            position:absolute;
+            top:0;
+            left:0;
+            bottom:0;
+            width:100%;
+            height:100%; }
+        .view-animate.ng-enter, .view-animate.ng-leave{
+            -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) .5s;
+            transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) .5s;
+        }
+
+        .view-animate.ng-enter{
+            left:100%;
+        }
+        .view-animate.ng-enter.ng-enter-active{
+            left:0;
+        }
+        .view-animate.ng-leave.ng-leave-active{
+            left:-100%;
+        }
+    </style>
 </head>
 
 <body>
-    <div ui-view></div>
+<div class="view-animate-container">
+    <div class="view-animate" ui-view></div>
+</div>
 </body>
 
 </html>
