@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html ng-app="ngApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>FileReader</title>
+    <script type="text/javascript" src="../angular-1.3.0.14/angular.js"></script>
+    <script type="text/javascript">
+        var ngApp = angular.module('ngApp', []);
+        (function (module) {
+            var fileReader = function ($q, $log) {
+                var onLoad = function (reader, deferred, scope) {
+                    return function () {
+                        scope.$apply(function () {
+                            deferred.resolve(reader.result);
+                        });
+                    };
+                };
+                var onError = function (reader, deferred, scope) {
+                    return function () {
+                        scope.$apply(function () {
+                            deferred.reject(reader.result);
+                        });
+                    };
+                };
+                var onProgress = function (reader, scope) {
+                    return function (event) {
+                        scope.$broadcast("fileProgress", {
+                            total: event.total,
+                            loaded: event.loaded
+                        });
+                    };
+                };
+
+                var getReader = function (deferred, scope) {
+                    var reader = new FileReader();
+                    reader.onload = onLoad(reader, deferred, scope);
+                    reader.onerror = onError(reader, deferred, scope);
+                    reader.onprogress = onProgress(reader, scope);
+                    return reader;
+                };
+                var readAsDataURL = function (file, scope) {
+                    var deferred = $q.defer();
+                    var reader = getReader(deferred, scope);
+                    reader.readAsDataURL(file);
+                    return deferred.promise;
+                };
+                return {
+                    readAsDataUrl: readAsDataURL
+                };
+            };
+            module.factory("fileReader",
+                    ["$q", "$log", fileReader]);
+
+        }(ngApp));
+
+        ngApp.directive('fileInput', function ($parse, $rootScope) {
+            return {
+                restrict: "EA",
+                template: '<input type="file" class="uploadfile"  accept="image/*;capture=camera"  />',
+                replace: true,
+                link: function (scope, element, attrs) {
+
+                    var modelGet = $parse(attrs.fileInput);
+                    var modelSet = modelGet.assign;
+                    var onChange = $parse(attrs.onChange);
+
+                    var updateModel = function () {
+                        scope.$apply(function () {
+                            modelSet(scope, element[0].files[0]);
+                            onChange(scope);
+                        });
+                    };
+
+                    element.bind('change', updateModel);
+                }
+            };
+        });
+
+        ngApp.controller('MainCtrl', ['$scope', 'fileReader', function ($scope, fileReader) {
+            $scope.readFile = function () {
+                fileReader.readAsDataUrl($scope.file, $scope)
+                        .then(function (result) {
+                            $scope.imageSrc = result;
+                        });
+            };
+            $scope.$on("fileProgress", function (e, progress) {
+                $scope.progress = progress.loaded / progress.total;
+            });
+        }]);
+    </script>
+</head>
+<body>
+
+<div ng-controller="MainCtrl">
+    <progress value="{{progress}}"></progress>
+
+    <div file-input="file" on-change="readFile()"></div>
+    <img ng-src="{{imageSrc}}" />
+</div>
+</body>
+</html>
