@@ -10,7 +10,7 @@ myServiceApp.factory('userListService', ['$http',
         return {
             userList: function(username) {
                 return doRequest(username, 'userList');
-            },
+            }
         };
     }
 ]);
