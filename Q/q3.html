@@ -7,7 +7,7 @@
     <script type="text/javascript">
         var ngApp = angular.module('ngApp', []);
 
-        ngApp.factory('srv', function ($q, $http) {
+        ngApp.factory('httpQueue', function ($q, $http) {
 
             var queue = [];
             var execNext = function () {
@@ -31,13 +31,13 @@
             };
         });
 
-        ngApp.controller('MainCtrl', ['$scope', 'srv','$q', function ($scope, srv, $q) { // 引用我们定义的UserInfo服务
+        ngApp.controller('MainCtrl', ['$scope', 'httpQueue','$q', function ($scope, httpQueue, $q) { // 引用我们定义的UserInfo服务
             var promises = [];
 
 
             var arr = ['mine.json','mine1.json'];
             angular.forEach(arr, function (value, index) {
-                var promise = srv({method: 'POST', url:value});
+                var promise = httpQueue({method: 'POST', url:value});
                 promise.then(function (data) {
                    console.log(data);
                 });
