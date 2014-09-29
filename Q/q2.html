@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html ng-app="ngApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript" src="../angular-1.3.0.14/angular.js"></script>
+    <script type="text/javascript">
+        var ngApp = angular.module('ngApp', []);
+
+        ngApp.factory('srv', function ($q, $http) {
+
+            var queue = [];
+            var execNext = function () {
+                var task = queue[0];
+                $http(task.c).then(function (data) {
+                    queue.shift();
+                    task.d.resolve(data);
+                    if (queue.length > 0) execNext();
+                }, function (err) {
+                    queue.shift();
+                    task.d.reject(err);
+                    if (queue.length > 0) execNext();
+                })
+
+            };
+            return function (config) {
+                var d = $q.defer();
+                queue.push({c: config, d: d});
+                if (queue.length === 1) execNext();
+                return d.promise;
+            };
+        });
+
+        ngApp.controller('MainCtrl', ['$scope', 'srv', function ($scope, srv) { // 引用我们定义的UserInfo服务
+            var promise = srv({method: 'GET', url: 'mine1.json'});
+
+            promise.then(function (data) {
+                $scope.user1 = data.data;
+                console.log(data.data.name);
+                return srv({method: 'GET', url: 'mine.json'});
+            }).then(function (data) {
+                $scope.user = data.data;
+                console.log(data.data.name)
+            });
+
+
+
+        }]);
+    </script>
+</head>
+<body>
+
+<div ng-controller="MainCtrl">
+    <p>{{user1.name}}</p>
+    <p>{{user.name}}</p>
+    <p>
+        {{user.error}}
+    </p>
+
+</div>
+</body>
+</html>
