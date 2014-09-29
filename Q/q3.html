@@ -31,11 +31,11 @@
             };
         });
 
-        ngApp.controller('MainCtrl', ['$scope', 'httpQueue','$q', function ($scope, httpQueue, $q) { // 引用我们定义的UserInfo服务
+        ngApp.controller('MainCtrl', ['$scope', 'httpQueue','$q', function ($scope, httpQueue, $q) {
+
             var promises = [];
-
-
             var arr = ['mine.json','mine1.json'];
+
             angular.forEach(arr, function (value, index) {
                 var promise = httpQueue({method: 'POST', url:value});
                 promise.then(function (data) {
