@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html ng-app="ngApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>省份联动</title>
+    <script type="text/javascript" src="../angular-1.3.0.14/angular.js"></script>
+    <script type="text/javascript">
+        var ngProvince = angular.module('ngProvince', []);
+
+        ngProvince.directive('province', function ($parse, $rootScope, $http, $cacheFactory) {
+            return {
+                restrict: "EA",
+                templateUrl: 'province.html',
+                replace: false,
+                link: function (scope, element, attrs) {
+                    var vm = scope.vm = {};
+                    $http({
+                        method: 'GET',
+                        url: 'city.json',
+                        cache: function () {
+                            return $cacheFactory('CityList');
+                        }
+                    }).success(function (data) {
+                        vm.provinces = data.citylist;
+                    });
+                }
+            };
+        });
+
+        var ngApp = angular.module('ngApp', ['ngProvince']);
+
+        ngApp.controller('MainCtrl',  function ($scope, $cacheFactory, $http) {
+
+        });
+    </script>
+    <script type="text/ng-template" id="province.html">
+        <form name="province">
+            <ul class="province">
+                <li>
+                    <select ng-model="vm.province" ng-options="province.p for province in vm.provinces">
+                        <option value="">--省份--</option>
+                    </select>
+                </li>
+                <li ng-if="vm.province.c">
+                    <select ng-model="vm.city" ng-options="city.n for city in vm.province.c">
+                        <option value="">--城市--</option>
+                    </select>
+                </li>
+                <li ng-if="vm.city.a">
+                    <select ng-model="vm.area" ng-options="area.s for area in vm.city.a">
+                        <option value="">--县区--</option>
+                    </select>
+                </li>
+            </ul>
+        </form>
+    </script>
+</head>
+<body>
+
+<div ng-controller="MainCtrl">
+
+    <div province></div>
+
+    <div ng-bind-template="{{vm.province.p}}  {{vm.city.n}}  {{vm.area.s}}"></div>
+
+</div>
+</body>
+</html>

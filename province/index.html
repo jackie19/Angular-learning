@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html ng-app="ngApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>省份联动</title>
+    <script type="text/javascript" src="../angular-1.3.0.14/angular.js"></script>
+    <script type="text/javascript">
+        var ngApp = angular.module('ngApp', []);
+        (function (module) {
+            var fileReader = function ($q, $log) {};
+            module.factory("fileReader",
+                    ["$q", "$log", fileReader]);
+
+        }(ngApp));
+
+        ngApp.directive('fileInput', function ($parse, $rootScope) {
+            return {
+                restrict: "EA",
+                template: '<input type="file" class="uploadfile"  accept="image/*;capture=camera"  />',
+                replace: true,
+                link: function (scope, element, attrs) {
+
+                    var modelGet = $parse(attrs.fileInput);
+                    var modelSet = modelGet.assign;
+                    var onChange = $parse(attrs.onChange);
+
+                    var updateModel = function () {
+                        scope.$apply(function () {
+                            modelSet(scope, element[0].files[0]);
+                            onChange(scope);
+                        });
+                    };
+
+                    element.bind('change', updateModel);
+                }
+            };
+        });
+
+        ngApp.controller('MainCtrl', ['$scope','$cacheFactory','$http', function ($scope,$cacheFactory,$http) {
+            var vm = $scope.vm = {};
+            $http({
+                method: 'GET',
+                url: 'city.json',
+                cache: function () {
+                    return $cacheFactory('CityList');
+                }
+            }).success(function (data) {
+//                    return service.citylist = data;
+                vm.provinces = data.citylist;
+            });
+        }]);
+    </script>
+</head>
+<body>
+
+<div ng-controller="MainCtrl">
+
+    <ul class="province">
+        <li>
+            <select ng-model="vm.province" ng-options="province.p for province in vm.provinces">
+                <option value="">--省份--</option>
+            </select>
+        </li>
+        <li ng-if="vm.province.c">
+            <select ng-model="vm.city" ng-options="city.n for city in vm.province.c">
+                <option value="">--城市--</option>
+            </select>
+        </li>
+        <li ng-if="vm.city.a">
+            <select ng-model="vm.area" ng-options="area.s for area in vm.city.a">
+                <option value="">--县区--</option>
+            </select>
+        </li>
+    </ul>
+
+</div>
+</body>
+</html>
